@@ -1,13 +1,40 @@
 name: Build Flatpak
+
 on:
   push:
     branches:
       - master
   pull_request:
   workflow_dispatch:
+  schedule:
+    # Runs on the 1st of every month at 00:00 UTC
+    - cron: '0 0 1 * *'
 
 jobs:
+  check-activity:
+    runs-on: ubuntu-latest
+    outputs:
+      disable: ${{ steps.check.outputs.disable }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check last commit date
+        id: check
+        run: |
+          last_commit_date=$(git log -1 --format=%ct)
+          now=$(date +%s)
+          diff=$(( (now - last_commit_date) / 86400 ))
+          echo "Days since last commit: $diff"
+          if [ "$diff" -ge 30 ]; then
+            echo "disable=true" >> $GITHUB_OUTPUT
+          else
+            echo "disable=false" >> $GITHUB_OUTPUT
+          fi
+
   build:
+    needs: check-activity
+    if: needs.check-activity.outputs.disable == 'false'
     runs-on: ubuntu-latest
     container:
       image: bilelmoussaoui/flatpak-github-actions:latest
