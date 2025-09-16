@@ -1,46 +1,42 @@
-name: Build Flatpak
+name: Build Flatpak & Keep-Alive
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
   pull_request:
   workflow_dispatch:
   schedule:
-    # Runs on the 1st of every month at 00:00 UTC
-    - cron: '0 0 1 * *'
+    # Runs every Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
 
 jobs:
-  check-activity:
+  keep-alive:
     runs-on: ubuntu-latest
-    outputs:
-      disable: ${{ steps.check.outputs.disable }}
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check last commit date
-        id: check
+      - name: Make keep-alive commit
         run: |
-          last_commit_date=$(git log -1 --format=%ct)
-          now=$(date +%s)
-          diff=$(( (now - last_commit_date) / 86400 ))
-          echo "Days since last commit: $diff"
-          if [ "$diff" -ge 30 ]; then
-            echo "disable=true" >> $GITHUB_OUTPUT
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          mkdir -p .github/keepalive
+          echo "$(date)" > .github/keepalive/last-keepalive.txt
+          git add .github/keepalive/last-keepalive.txt
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
           else
-            echo "disable=false" >> $GITHUB_OUTPUT
-          fi
+            git commit -m "Keep-alive commit: $(date)"
+            git push
 
   build:
-    needs: check-activity
-    if: needs.check-activity.outputs.disable == 'false'
+    needs: keep-alive
     runs-on: ubuntu-latest
     container:
       image: bilelmoussaoui/flatpak-github-actions:latest
       options: --privileged
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Build Flatpak
