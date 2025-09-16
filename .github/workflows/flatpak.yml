@@ -28,6 +28,7 @@ jobs:
           else
             git commit -m "Keep-alive commit: $(date)"
             git push
+          fi
 
   build:
     needs: keep-alive
