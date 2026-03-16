@@ -218,13 +218,13 @@ modules:
         dest: vcpkg/downloads/abdes/cryptopp-cmake
 
       - type: archive
-        url: https://nchc.dl.sourceforge.net/project/freeimage/Source%20Distribution/3.18.0/FreeImage3180.zip
+        url: http://nchc.dl.sourceforge.net/project/freeimage/Source%20Distribution/3.18.0/FreeImage3180.zip
         sha512: 9d9cc7e2d57552c3115e277aeb036e0455204d389026b17a3f513da5be1fd595421655488bb1ec2f76faebed66049119ca55e26e2a6d37024b3fb7ef36ad4818
         strip-components: 1
         dest: vcpkg/downloads/freeimage/Source%20Distribution
 
       - type: archive
-        url: https://nchc.dl.sourceforge.net/project/freetype/freetype2/2.12.1/freetype-2.12.1.tar.xz
+        url: http://nchc.dl.sourceforge.net/project/freetype/freetype2/2.12.1/freetype-2.12.1.tar.xz
         sha512: 6482de1748dc2cc01e033d21a3b492dadb1f039d13d9179685fdcf985e24d7f587cbca4c27ed8a7fdb7d9ad59612642ac5f4db062443154753295363f45c052f
         strip-components: 1
         dest: vcpkg/downloads/freetype/freetype2
