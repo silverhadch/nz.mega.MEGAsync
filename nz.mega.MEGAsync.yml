@@ -51,10 +51,7 @@ modules:
           - type: git
             url: https://gitlab.freedesktop.org/xorg/lib/libxmu.git
             tag: libXmu-1.3.1
-            # FIXME: resolve with:
-            #   git ls-remote https://gitlab.freedesktop.org/xorg/lib/libxmu.git refs/tags/libXmu-1.3.1
-            # The ^{} (dereferenced) line gives the tree commit; use that value.
-            commit: FIXME
+            commit: cdf280f6611932f79ab872832974e8043b1cad6d
   - name: MEGAsync
     buildsystem: cmake-ninja
     builddir: true
