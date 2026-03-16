@@ -125,9 +125,7 @@ modules:
       # Download patchelf as required by vcpkg_find_acquire_program(PATCHELF) to fix rpath of static libraries
       - type: file
         url: https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0-x86_64.tar.gz
-        # FIXME: resolve with:
-        #   curl -L https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0-x86_64.tar.gz | sha512sum
-        sha512: FIXME
+        sha512: 5db1fe6b969ceae862cbc4f10d0e953250d646ae91b869a6d5529dbeacd62c1f8402f12c5aaba6cb6325688b325637ef0191fd798972dd3a00f65262f12bb5f2
 
       - type: shell
         commands:
